@@ -1,3 +1,5 @@
+package com.boardgames.reversi;
+
 public class ReversiGame {
 
     public enum GameState {

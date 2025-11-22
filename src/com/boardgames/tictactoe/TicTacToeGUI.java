@@ -1,8 +1,12 @@
+package com.boardgames.tictactoe;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import com.boardgames.GameSelectionGUI;
 
 public class TicTacToeGUI extends JFrame {
 
@@ -219,7 +223,7 @@ public class TicTacToeGUI extends JFrame {
             for (JButton button : row)
                 button.setEnabled(false);
         Timer timer = new Timer(500, e -> {
-            int[] aiMove = AIPlayer.findRandomMove(game.getBoard());
+            int[] aiMove = TicTacToeAIPlayer.findRandomMove(game.getBoard());
             if (aiMove != null) {
                 game.makeMove(aiMove[0], aiMove[1]);
                 updateView();

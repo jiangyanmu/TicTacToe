@@ -1,7 +1,11 @@
+package com.boardgames;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
+import com.boardgames.reversi.ReversiGUI;
+import com.boardgames.tictactoe.TicTacToeGUI;
 
 public class GameSelectionGUI extends JFrame {
 

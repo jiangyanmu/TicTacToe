@@ -1,3 +1,5 @@
+package com.boardgames.tictactoe;
+
 public class TicTacToeGame {
 
     public enum GameState {

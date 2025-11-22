@@ -1,3 +1,5 @@
+package com.boardgames.reversi;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +9,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import com.boardgames.GameSelectionGUI;
 
 public class ReversiGUI extends JFrame {
     public enum GameMode {
@@ -106,14 +109,14 @@ public class ReversiGUI extends JFrame {
         button.setFocusable(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(COLOR_BORDER, 2),
-                BorderFactory.createEmptyBorder(15, 30, 15, 30)
-        ));
+                BorderFactory.createEmptyBorder(15, 30, 15, 30)));
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 button.setBackground(COLOR_PRIMARY);
                 button.setForeground(COLOR_CARD);
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
                 button.setBackground(COLOR_CARD);
@@ -140,7 +143,6 @@ public class ReversiGUI extends JFrame {
         headerPanel.add(statusLabel, BorderLayout.NORTH);
         headerPanel.add(scoreLabel, BorderLayout.SOUTH);
 
-
         // Board Panel
         JPanel boardPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE, 2, 2));
         boardPanel.setBackground(new Color(30, 130, 30));
@@ -150,10 +152,9 @@ public class ReversiGUI extends JFrame {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 buttons[i][j] = new JButton("");
                 buttons[i][j].setFocusable(false);
-                if((i+j)%2 == 0){
+                if ((i + j) % 2 == 0) {
                     buttons[i][j].setBackground(new Color(34, 139, 34));
-                }
-                else{
+                } else {
                     buttons[i][j].setBackground(new Color(30, 130, 30));
                 }
                 buttons[i][j].setBorder(null);
@@ -161,21 +162,20 @@ public class ReversiGUI extends JFrame {
                 final int r = i;
                 final int c = j;
                 buttons[i][j].addMouseListener(new MouseAdapter() {
-                     public void mouseEntered(MouseEvent evt) {
+                    public void mouseEntered(MouseEvent evt) {
                         if (game.isValidMove(r, c)) {
-                            if((r+c)%2 == 0){
+                            if ((r + c) % 2 == 0) {
                                 buttons[r][c].setBackground(new Color(34, 139, 34).brighter());
-                            }
-                            else{
+                            } else {
                                 buttons[r][c].setBackground(new Color(30, 130, 30).brighter());
                             }
                         }
                     }
+
                     public void mouseExited(MouseEvent evt) {
-                        if((r+c)%2 == 0){
+                        if ((r + c) % 2 == 0) {
                             buttons[r][c].setBackground(new Color(34, 139, 34));
-                        }
-                        else{
+                        } else {
                             buttons[r][c].setBackground(new Color(30, 130, 30));
                         }
                     }
@@ -206,7 +206,9 @@ public class ReversiGUI extends JFrame {
     }
 
     private void handleAITurn() {
-        for (JButton[] row : buttons) for (JButton button : row) button.setEnabled(false);
+        for (JButton[] row : buttons)
+            for (JButton button : row)
+                button.setEnabled(false);
         Timer timer = new Timer(1000, e -> {
             int[] aiMove = ReversiAIPlayer.findBestMove(game);
             if (aiMove != null) {
@@ -220,19 +222,22 @@ public class ReversiGUI extends JFrame {
 
     private class ButtonClickListener implements ActionListener {
         private final int row, col;
+
         public ButtonClickListener(int row, int col) {
             this.row = row;
             this.col = col;
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (game.getGameState() != ReversiGame.GameState.PLAYING) return;
+            if (game.getGameState() != ReversiGame.GameState.PLAYING)
+                return;
 
             if (game.makeMove(row, col)) {
                 updateView();
                 if (gameMode == GameMode.PLAYER_VS_AI &&
-                    game.getGameState() == ReversiGame.GameState.PLAYING &&
-                    game.getCurrentPlayer() == 'W') {
+                        game.getGameState() == ReversiGame.GameState.PLAYING &&
+                        game.getCurrentPlayer() == 'W') {
                     handleAITurn();
                 }
             }
@@ -253,10 +258,10 @@ public class ReversiGUI extends JFrame {
 
         // Highlight valid moves
         if (game.getGameState() == ReversiGame.GameState.PLAYING) {
-             for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int i = 0; i < BOARD_SIZE; i++) {
                 for (int j = 0; j < BOARD_SIZE; j++) {
                     if (game.isValidMoveForPlayer(i, j, currentPlayer)) {
-                         buttons[i][j].setIcon(getIconForSymbol('+', i, j));
+                        buttons[i][j].setIcon(getIconForSymbol('+', i, j));
                     }
                 }
             }
@@ -284,7 +289,8 @@ public class ReversiGUI extends JFrame {
 
     private Icon getIconForSymbol(char symbol, int row, int col) {
         int size = buttons[row][col].getWidth();
-        if (size == 0) size = 50; // Default size
+        if (size == 0)
+            size = 50; // Default size
 
         Color primaryColor;
         boolean fill = true;
@@ -296,9 +302,9 @@ public class ReversiGUI extends JFrame {
                 primaryColor = Color.WHITE;
                 break;
             case '+': // Valid move hint
-                 primaryColor = new Color(255, 255, 255, 120);
-                 fill = false;
-                 break;
+                primaryColor = new Color(255, 255, 255, 120);
+                fill = false;
+                break;
             default:
                 return null;
         }
@@ -310,23 +316,24 @@ public class ReversiGUI extends JFrame {
         if (fill) {
             // Use a gradient for a more 3D look
             Color lighterColor = primaryColor.brighter();
-            if(primaryColor == Color.BLACK) {
-                lighterColor = new Color(80,80,80);
+            if (primaryColor == Color.BLACK) {
+                lighterColor = new Color(80, 80, 80);
             }
-             if(primaryColor == Color.WHITE) {
-                lighterColor = new Color(200,200,200);
+            if (primaryColor == Color.WHITE) {
+                lighterColor = new Color(200, 200, 200);
             }
             Point2D center = new Point2D.Float(size / 2.0f, size / 2.0f);
             float radius = size / 2.0f;
-            float[] dist = {0.0f, 1.0f};
+            float[] dist = { 0.0f, 1.0f };
             Point2D focus = new Point2D.Float(size / 2.0f - 2, size / 2.0f - 2);
-            Color[] colors = {lighterColor, primaryColor};
-            RadialGradientPaint p = new RadialGradientPaint(center, radius, focus, dist, colors, MultipleGradientPaint.CycleMethod.NO_CYCLE);
+            Color[] colors = { lighterColor, primaryColor };
+            RadialGradientPaint p = new RadialGradientPaint(center, radius, focus, dist, colors,
+                    MultipleGradientPaint.CycleMethod.NO_CYCLE);
             g2d.setPaint(p);
             g2d.fillOval(2, 2, size - 5, size - 5);
         } else {
             g2d.setColor(primaryColor);
-            g2d.drawOval(size/2 - 5, size/2 - 5, 10, 10);
+            g2d.drawOval(size / 2 - 5, size / 2 - 5, 10, 10);
         }
 
         g2d.dispose();

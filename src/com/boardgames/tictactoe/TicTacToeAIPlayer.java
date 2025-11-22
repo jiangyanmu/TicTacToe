@@ -1,8 +1,10 @@
+package com.boardgames.tictactoe;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class AIPlayer {
+public class TicTacToeAIPlayer {
 
     /**
      * Finds a move for the AI player.
