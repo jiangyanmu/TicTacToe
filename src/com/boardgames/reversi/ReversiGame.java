@@ -45,14 +45,12 @@ public class ReversiGame {
         if (isGameOver()) {
             updateFinalGameState();
         } else {
-            switchPlayer();
-            if (!hasValidMove(currentPlayer)) {
-                // If the new player has no valid moves, skip their turn
+            char nextPlayer = getOpponent();
+            if (hasValidMove(nextPlayer)) {
                 switchPlayer();
-                if (!hasValidMove(currentPlayer)) {
-                    // If the other player also has no moves, the game is over
-                    updateFinalGameState();
-                }
+            } else if (!hasValidMove(currentPlayer)) {
+                // If the other player also has no moves, the game is over
+                updateFinalGameState();
             }
         }
 
